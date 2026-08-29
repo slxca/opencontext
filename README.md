@@ -3,7 +3,7 @@
 [![MCP](https://img.shields.io/badge/MCP-compatible-2563eb)](https://modelcontextprotocol.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933)](https://nodejs.org/)
-[![Website](https://img.shields.io/badge/URL-opencntx.dev-c42f52?link=https%3A%2F%2Fopencntx.dev)](https://opencntx.com)
+[![Website](https://img.shields.io/badge/URL-opencntx.dev-c42f52?link=https%3A%2F%2Fopencntx.dev)](https://opencntx.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 OpenContext MCP gives AI agents persistent, project-local memory.
