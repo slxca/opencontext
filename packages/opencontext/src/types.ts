@@ -4,9 +4,6 @@ export const SERVER_NAME = "opencontext-mcp";
 /** Current server version for compatibility checks. */
 export const SERVER_VERSION = "1.0.0";
 
-/** Directory name where context files are stored. */
-export const CONTEXT_DIRECTORY_NAME = ".opencontext";
-
 /** Filename for the auto-generated context index. */
 export const INDEX_FILENAME = "index.md";
 

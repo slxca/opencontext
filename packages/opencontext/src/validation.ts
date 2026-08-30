@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import { CONTEXT_DIRECTORY_NAME, RESERVED_TOPICS, TOPIC_PATTERN, UserInputError } from "./types.js";
+import { RESERVED_TOPICS, TOPIC_PATTERN, UserInputError } from "./types.js";
 
 /**
  * Options for configuring write guard behavior.
@@ -55,19 +55,18 @@ export function validateTopic(topicInput: string): string {
 
 /**
  * Sanitizes a topic path to prevent path traversal attacks.
- * Ensures the resolved path stays within the .opencontext directory.
- * @param baseDir - The base directory (typically project root)
+ * Ensures the resolved path stays within the context directory.
+ * @param contextDir - The absolute path to the context directory
  * @param topic - The topic name
  * @returns The sanitized absolute path to the topic file
  * @throws UserInputError if path traversal is detected
  */
-export function sanitizeTopicPath(baseDir: string, topic: string): string {
+export function sanitizeTopicPath(contextDir: string, topic: string): string {
   // Quick rejection of obvious path traversal attempts
   if (topic.includes("..") || path.isAbsolute(topic) || topic.startsWith(".") || topic.includes("/")) {
     throw new UserInputError("Path traversal detected: topic must not contain '..', '/', or absolute paths.");
   }
 
-  const contextDir = path.join(baseDir, CONTEXT_DIRECTORY_NAME);
   const filePath = path.join(contextDir, `${topic}.md`);
   const resolvedPath = path.resolve(filePath);
   const resolvedContextDir = path.resolve(contextDir);

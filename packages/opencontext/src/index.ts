@@ -9,7 +9,7 @@ import { SERVER_NAME, getErrorMessage } from "./types.js";
  * Creates server instance and connects to stdio transport.
  */
 async function main(): Promise<void> {
-  const server = createOpenContextServer();
+  const server = await createOpenContextServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }

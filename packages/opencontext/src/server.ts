@@ -2,14 +2,20 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { ContextStore } from "./context-store.js";
 import { SERVER_NAME, SERVER_VERSION, getErrorMessage, textResult } from "./types.js";
+import { loadConfig, type ResolvedConfig } from "./config.js";
 
 /**
  * Creates and configures the OpenContext MCP server.
  * Registers all available tools (save_context, read_context).
  * @param basePath - Optional base directory (defaults to cwd)
+ * @param config - Optional pre-loaded config (loads from disk if omitted)
  */
-export function createOpenContextServer(basePath?: string): McpServer {
-  const store = new ContextStore(basePath);
+export async function createOpenContextServer(
+  basePath?: string,
+  config?: ResolvedConfig,
+): Promise<McpServer> {
+  const resolvedConfig = config ?? await loadConfig(basePath);
+  const store = new ContextStore(basePath, resolvedConfig);
 
   const server = new McpServer({
     name: SERVER_NAME,
@@ -20,8 +26,7 @@ export function createOpenContextServer(basePath?: string): McpServer {
     "save_context",
     {
       title: "Save Context",
-      description:
-        "Persist markdown project context, architectural rules, or decisions into .opencontext/<topic>.md in the current working directory.",
+      description: `Persist markdown project context, architectural rules, or decisions into ${resolvedConfig.path}/<topic>.md in the current working directory.`,
       inputSchema: {
         topic: z
           .string()
@@ -33,6 +38,12 @@ export function createOpenContextServer(basePath?: string): McpServer {
       },
     },
     async ({ topic, content }) => {
+      if (resolvedConfig.disabled) {
+        return textResult("OpenContext is currently paused. Tool access is disabled via configuration.");
+      }
+      if (resolvedConfig.readOnly) {
+        return textResult("OpenContext is in read-only mode. Write operations are disabled via configuration.", true);
+      }
       try {
         const result = await store.saveContext(topic, content);
         return textResult(result);
@@ -59,6 +70,9 @@ export function createOpenContextServer(basePath?: string): McpServer {
       },
     },
     async ({ topic }) => {
+      if (resolvedConfig.disabled) {
+        return textResult("OpenContext is currently paused. Tool access is disabled via configuration.");
+      }
       try {
         const result = await store.readContext(topic);
         return textResult(result);

@@ -148,38 +148,44 @@ describe("WriteGuard", () => {
     });
 
     it("returns valid path for safe topic", () => {
-      const result = sanitizeTopicPath(tmpDir, "api-contracts");
+      const contextDir = path.join(tmpDir, ".opencontext");
+      const result = sanitizeTopicPath(contextDir, "api-contracts");
       expect(result).toBe(path.join(tmpDir, ".opencontext", "api-contracts.md"));
     });
 
     it("returns valid path for snake_case topic", () => {
-      const result = sanitizeTopicPath(tmpDir, "coding_rules");
+      const contextDir = path.join(tmpDir, ".opencontext");
+      const result = sanitizeTopicPath(contextDir, "coding_rules");
       expect(result).toBe(path.join(tmpDir, ".opencontext", "coding_rules.md"));
     });
 
     it("rejects path traversal with ..", async () => {
-      expect(() => sanitizeTopicPath(tmpDir, "../../etc/passwd")).toThrow(UserInputError);
+      const contextDir = path.join(tmpDir, ".opencontext");
+      expect(() => sanitizeTopicPath(contextDir, "../../etc/passwd")).toThrow(UserInputError);
     });
 
     it("rejects path traversal with backslash on Windows", async () => {
+      const contextDir = path.join(tmpDir, ".opencontext");
       // Note: Backslashes are valid filenames on Unix systems
       // This test verifies the behavior on Windows where backslashes are path separators
       if (process.platform === "win32") {
-        expect(() => sanitizeTopicPath(tmpDir, "sibling\\topic")).toThrow(UserInputError);
+        expect(() => sanitizeTopicPath(contextDir, "sibling\\topic")).toThrow(UserInputError);
       } else {
         // On Unix, backslashes are valid characters, so this should pass
-        const result = sanitizeTopicPath(tmpDir, "sibling\\topic");
+        const result = sanitizeTopicPath(contextDir, "sibling\\topic");
         expect(result).toContain("sibling\\topic.md");
       }
     });
 
     it("rejects absolute path", async () => {
-      expect(() => sanitizeTopicPath(tmpDir, "/root/test")).toThrow(UserInputError);
-      expect(() => sanitizeTopicPath(tmpDir, "/etc/passwd")).toThrow(UserInputError);
+      const contextDir = path.join(tmpDir, ".opencontext");
+      expect(() => sanitizeTopicPath(contextDir, "/root/test")).toThrow(UserInputError);
+      expect(() => sanitizeTopicPath(contextDir, "/etc/passwd")).toThrow(UserInputError);
     });
 
     it("rejects path with hidden dot-files", async () => {
-      expect(() => sanitizeTopicPath(tmpDir, ".hidden")).toThrow(UserInputError);
+      const contextDir = path.join(tmpDir, ".opencontext");
+      expect(() => sanitizeTopicPath(contextDir, ".hidden")).toThrow(UserInputError);
     });
   });
 

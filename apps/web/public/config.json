@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenContext Configuration",
+  "description": "Configuration schema for OpenContext MCP server.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URL to the OpenContext JSON schema."
+    },
+    "path": {
+      "type": "string",
+      "default": ".opencontext",
+      "description": "Custom directory path for storing context markdown files."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "Disables all write tools (save_context, append_context)."
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Temporarily disables OpenContext tools without removing the MCP server."
+    },
+    "autoIndex": {
+      "type": "boolean",
+      "default": true,
+      "description": "Automatically generates and maintains index.md for token savings."
+    },
+    "history": {
+      "type": "object",
+      "description": "Configuration for context file history and backups.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to enable context file history tracking."
+        },
+        "maxBackupsPerTopic": {
+          "type": "number",
+          "default": 5,
+          "description": "Maximum number of backup files to keep per topic."
+        },
+        "retentionDays": {
+          "type": "number",
+          "default": 7,
+          "description": "Number of days to retain backup files before cleanup."
+        }
+      }
+    },
+    "guard": {
+      "type": "object",
+      "description": "Configuration for the write guard and validation system.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the write guard is enabled."
+        },
+        "maxFileSizeKb": {
+          "type": "number",
+          "default": 50,
+          "description": "Maximum allowed payload size in kilobytes."
+        },
+        "strictPatternCheck": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to check for forbidden prompt injection patterns."
+        }
+      }
+    }
+  }
+}

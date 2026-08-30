@@ -1,23 +1,31 @@
 import { mkdir, readdir, readFile, writeFile, stat } from "node:fs/promises";
 import * as path from "node:path";
-import { CONTEXT_DIRECTORY_NAME, INDEX_FILENAME, UserInputError, isNodeError } from "./types.js";
+import { INDEX_FILENAME, UserInputError, isNodeError } from "./types.js";
 import { validateTopic, validateWritePayload, sanitizeTopicPath } from "./validation.js";
+import { type ResolvedConfig, DEFAULT_CONFIG } from "./config.js";
 
 /**
  * Manages context file storage operations.
- * Handles reading, writing, and listing context files in .opencontext/ directory.
+ * Handles reading, writing, and listing context files in the configured directory.
  */
 export class ContextStore {
-  constructor(private readonly basePath: string = process.cwd()) {}
+  private readonly contextDir: string;
 
-  /** Returns the absolute path to the .opencontext directory. */
+  constructor(
+    private readonly basePath: string = process.cwd(),
+    private readonly config: ResolvedConfig = DEFAULT_CONFIG,
+  ) {
+    this.contextDir = path.join(this.basePath, this.config.path);
+  }
+
+  /** Returns the absolute path to the context directory. */
   public getContextDirectory(): string {
-    return path.join(this.basePath, CONTEXT_DIRECTORY_NAME);
+    return this.contextDir;
   }
 
   /** Returns the absolute path to a topic file. */
   public getTopicFilePath(topic: string): string {
-    return path.join(this.getContextDirectory(), `${topic}.md`);
+    return path.join(this.contextDir, `${topic}.md`);
   }
 
   /**
@@ -29,20 +37,22 @@ export class ContextStore {
    * @throws UserInputError if validation fails
    */
   public async saveContext(topicInput: string, content: string): Promise<string> {
-    const guardResult = validateWritePayload(topicInput, content);
+    const guardResult = validateWritePayload(topicInput, content, {
+      maxFileSizeKb: this.config.guard.maxFileSizeKb as number,
+      strictPatternCheck: this.config.guard.strictPatternCheck as boolean,
+    });
     if (!guardResult.allowed) {
       console.error(`WriteGuard Rejected: ${guardResult.reason} (Code: ${guardResult.code})`);
       throw new UserInputError(`WriteGuard Rejected: ${guardResult.reason} (Code: ${guardResult.code})`);
     }
 
     const topic = validateTopic(topicInput);
-    const contextDirectory = this.getContextDirectory();
-    const filePath = sanitizeTopicPath(this.basePath, topic);
+    const filePath = sanitizeTopicPath(this.contextDir, topic);
 
-    await mkdir(contextDirectory, { recursive: true });
+    await mkdir(this.contextDir, { recursive: true });
     await writeFile(filePath, content, "utf8");
 
-    return `Saved context topic "${topic}" to ${CONTEXT_DIRECTORY_NAME}/${topic}.md.`;
+    return `Saved context topic "${topic}" to ${this.config.path}/${topic}.md.`;
   }
 
   /**
@@ -56,12 +66,12 @@ export class ContextStore {
       const topic = validateTopic(topicInput);
 
       try {
-        const filePath = sanitizeTopicPath(this.basePath, topic);
+        const filePath = sanitizeTopicPath(this.contextDir, topic);
         return await readFile(filePath, "utf8");
       } catch (error) {
         if (isNodeError(error) && error.code === "ENOENT") {
           throw new UserInputError(
-            `No context found for topic "${topic}" at ${CONTEXT_DIRECTORY_NAME}/${topic}.md.`,
+            `No context found for topic "${topic}" at ${this.config.path}/${topic}.md.`,
           );
         }
 
@@ -72,7 +82,7 @@ export class ContextStore {
     const topics = await this.listTopics();
 
     if (topics.length === 0) {
-      return `No OpenContext topics found in ${CONTEXT_DIRECTORY_NAME}/. Use save_context to create one.`;
+      return `No OpenContext topics found in ${this.config.path}/. Use save_context to create one.`;
     }
 
     return this.rebuildContextIndex();
@@ -80,12 +90,12 @@ export class ContextStore {
 
   /**
    * Lists all available context topics.
-   * Scans .opencontext/ directory for .md files and returns sorted topic names.
+   * Scans the context directory for .md files and returns sorted topic names.
    * @returns Sorted array of topic names
    */
   public async listTopics(): Promise<string[]> {
     try {
-      const entries = await readdir(this.getContextDirectory(), { withFileTypes: true });
+      const entries = await readdir(this.contextDir, { withFileTypes: true });
 
       return entries
         .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
@@ -146,16 +156,14 @@ export class ContextStore {
   }
 
   /**
-   * Rebuilds the auto-generated index.md file in .opencontext/.
+   * Rebuilds the auto-generated index.md file in the context directory.
    * Scans all topic files, extracts metadata, and writes a compact index.
    * @returns The generated index markdown content
    */
   public async rebuildContextIndex(): Promise<string> {
-    const contextDir = this.getContextDirectory();
-
     let entries;
     try {
-      entries = await readdir(contextDir, { withFileTypes: true });
+      entries = await readdir(this.contextDir, { withFileTypes: true });
     } catch (error) {
       if (isNodeError(error) && error.code === "ENOENT") {
         return "";
@@ -186,7 +194,7 @@ export class ContextStore {
     }> = [];
 
     for (const entry of topicFiles) {
-      const filePath = path.join(contextDir, entry.name);
+      const filePath = path.join(this.contextDir, entry.name);
       const content = await readFile(filePath, "utf8");
       const fileStat = await stat(filePath);
       const topic = entry.name.slice(0, -".md".length);
@@ -219,7 +227,7 @@ export class ContextStore {
     lines.push("");
 
     const indexContent = lines.join("\n");
-    const indexPath = path.join(contextDir, INDEX_FILENAME);
+    const indexPath = path.join(this.contextDir, INDEX_FILENAME);
     await writeFile(indexPath, indexContent, "utf8");
 
     return indexContent;
