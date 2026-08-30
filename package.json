@@ -1,57 +1,11 @@
 {
-  "name": "opencontext-mcp",
-  "version": "1.0.0",
-  "description": "A Model Context Protocol server for persistent project-specific AI agent context.",
-  "type": "module",
-  "bin": {
-    "opencontext-mcp": "./dist/index.js"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "examples"
-  ],
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "start": "node dist/index.js",
-    "prepublishOnly": "pnpm build"
-  },
-  "keywords": [
-    "mcp",
-    "model-context-protocol",
-    "ai",
-    "agents",
-    "context",
-    "memory"
-  ],
-  "repository": {
-    "url": "git+https://github.com/slxca/opencontext.git"
-  },
-  "bugs": {
-    "url": "https://github.com/slxca/mockr.js/issues",
-    "email": "bugs@s-luca.com"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "author": "slxca <hello@slxca.com> (https://slxca.com)",
-  "funding": "https://github.com/sponsors/slxca",
-  "homepage": "https://opencntx.dev",
-  "license": "MIT",
-  "engines": {
-    "node": ">=20.0.0"
-  },
+  "name": "opencontext-monorepo",
+  "private": true,
   "packageManager": "pnpm@9.15.4",
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.4",
-    "zod": "^4.5.4"
-  },
-  "devDependencies": {
-    "@types/node": "^22.13.1",
-    "typescript": "^5.7.3",
-    "vitest": "^4.1.11"
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "dev": "pnpm -r --parallel dev"
   }
 }

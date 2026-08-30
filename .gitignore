@@ -3,7 +3,12 @@ node_modules/
 
 # Build artifacts
 dist/
+out/
 *.tsbuildinfo
+
+# Next.js
+.next/
+.vercel/
 
 # OpenContext storage (if used locally in dev)
 .opencontext/

@@ -6,7 +6,13 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/docs: {}
+
+  apps/web: {}
+
+  packages/opencontext:
     dependencies:
       '@modelcontextprotocol/sdk':
         specifier: ^1.17.4
