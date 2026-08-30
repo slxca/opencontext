@@ -3,6 +3,11 @@ import { z } from "zod";
 import { ContextStore } from "./context-store.js";
 import { SERVER_NAME, SERVER_VERSION, getErrorMessage, textResult } from "./types.js";
 
+/**
+ * Creates and configures the OpenContext MCP server.
+ * Registers all available tools (save_context, read_context).
+ * @param basePath - Optional base directory (defaults to cwd)
+ */
 export function createOpenContextServer(basePath?: string): McpServer {
   const store = new ContextStore(basePath);
 

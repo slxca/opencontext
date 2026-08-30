@@ -4,6 +4,10 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { createOpenContextServer } from "./server.js";
 import { SERVER_NAME, getErrorMessage } from "./types.js";
 
+/**
+ * Main entry point for the OpenContext MCP server.
+ * Creates server instance and connects to stdio transport.
+ */
 async function main(): Promise<void> {
   const server = createOpenContextServer();
   const transport = new StdioServerTransport();
