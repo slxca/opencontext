@@ -36,25 +36,29 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-32 md:pb-28">
-        {/* Badge */}
+        {/* Badges */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 flex justify-center"
+          className="mb-8 flex flex-wrap justify-center gap-3"
         >
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-950/70 px-2 py-1.5 sm:gap-2 sm:px-3 sm:py-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-200 sm:gap-2 sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.18em]">
-              <span className="h-1 w-1 rounded-full bg-zinc-200/80 animate-pulse sm:h-1.5 sm:w-1.5" />
-              MCP
-            </span>
-            <span className="rounded-full border border-zinc-800 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-300 sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.18em]">
-              STRICT TS
-            </span>
-            <span className="rounded-full border border-zinc-800 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-400 sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.18em]">
-              ZERO-CONFIG
-            </span>
-          </div>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-blue-400 transition-colors hover:border-blue-500/30 hover:bg-blue-500/15 sm:text-[11px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+            MCP
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-violet-400 transition-colors hover:border-violet-500/30 hover:bg-violet-500/15 sm:text-[11px]">
+            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            STRICT TS
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-emerald-400 transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/15 sm:text-[11px]">
+            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            ZERO-CONFIG
+          </span>
         </motion.div>
 
         {/* Headline */}

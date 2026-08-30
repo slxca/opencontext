@@ -25,7 +25,7 @@ export default function CopyButton({
   return (
     <button
       onClick={handleCopy}
-      className={`inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-mono text-zinc-400 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 ${className}`}
+      className={`ml-2 inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-mono text-zinc-400 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 ${className}`}
       aria-label={copied ? copiedLabel : label}
     >
       {copied ? (

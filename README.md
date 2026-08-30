@@ -16,6 +16,9 @@ The result is simple and transparent: your agent gets memory, and you keep full 
 
 - `save_context`: save markdown context to `.opencontext/<topic>.md`
 - `read_context`: read one saved topic or list all available topics
+- **Auto-Index**: automatic `index.md` generation with topic metadata
+- **Write Guard**: input validation, size limits, and prompt injection protection
+- **Config System**: customizable via `.opencontext.jsonc` or `.opencontext.json`
 - Project-specific storage based on the client's current working directory
 - No database, account, cloud sync, or hidden state
 - Works with MCP-compatible clients over stdio
@@ -72,19 +75,50 @@ Cursor and Claude Desktop use the same MCP server configuration:
 
 Restart your MCP client after updating the configuration.
 
-## How It Works
+## Configuration
 
-OpenContext MCP stores files relative to the process working directory used by your MCP client:
+OpenContext can be customized with a config file in your project root. Create `.opencontext.jsonc` or `.opencontext.json`:
 
-```text
-your-project/
-  .opencontext/
-    architecture.md
-    api-contracts.md
-    coding_rules.md
+```jsonc
+{
+  // Custom storage path (default: ".opencontext")
+  "path": ".opencontext",
+
+  // Disable write operations
+  "readOnly": false,
+
+  // Pause all tool access
+  "disabled": false,
+
+  // Auto-generate index.md with topic metadata
+  "autoIndex": true,
+
+  // Write guard settings
+  "guard": {
+    "enabled": true,
+    "maxFileSizeKb": 50,
+    "strictPatternCheck": true
+  },
+
+  // History backup settings (coming soon)
+  "history": {
+    "enabled": false,
+    "maxBackupsPerTopic": 5,
+    "retentionDays": 7
+  }
+}
 ```
 
-Topics must be lowercase snake_case or kebab-case, such as `architecture`, `api-contracts`, or `coding_rules`.
+### Guard System
+
+The write guard protects against:
+
+- **Empty content**: prevents saving blank or whitespace-only files
+- **Payload too large**: configurable max file size (default 50KB)
+- **Invalid topics**: enforces snake_case or kebab-case naming
+- **Path traversal**: blocks `..`, absolute paths, and directory escapes
+- **Reserved topics**: prevents overwriting system files like `index.md`
+- **Prompt injection**: detects and blocks common injection patterns
 
 ## Available Tools
 
@@ -140,10 +174,7 @@ Recommended workflow:
 3. Let agents update context when they discover something that should survive the current chat.
 4. Review `.opencontext/` files like normal project documentation.
 
-Copy-ready agent prompts:
-
-- [`examples/plan-agent.md`](examples/plan-agent.md) -- architect that analyzes requirements and saves context
-- [`examples/build-agent.md`](examples/build-agent.md) -- developer that reads context before coding
+For pre-built agent prompts, see the [documentation](https://opencntx.dev/docs/agents).
 
 ## Version Control
 
@@ -161,33 +192,45 @@ Or ignore it when context should stay local:
 
 Because files are plain markdown, both approaches are safe and easy to audit.
 
+## Project Structure
+
+```text
+opencontext/
+├── packages/
+│   └── opencontext/         # MCP server package
+│       ├── src/
+│       │   ├── index.ts           # CLI entrypoint (stdio transport)
+│       │   ├── server.ts          # McpServer factory and tool registration
+│       │   ├── config.ts          # Config loading (.opencontext.jsonc)
+│       │   ├── context-store.ts   # Filesystem operations for .opencontext/
+│       │   ├── validation.ts      # Topic validation and write guard
+│       │   └── types.ts           # Shared constants and error helpers
+│       └── test/
+│           ├── context-store.test.ts
+│           ├── validation.test.ts
+│           ├── guard.test.ts
+│           └── auto-index.test.ts
+├── apps/
+│   └── web/                 # Website (Next.js)
+│       └── src/
+│           ├── app/
+│           │   ├── page.tsx        # Landing page
+│           │   ├── docs/           # Documentation
+│           │   ├── imprint/
+│           │   └── privacy-policy/
+│           └── components/
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── README.md
+```
+
 ## Development
 
 ```bash
 pnpm install
-pnpm build        # compile TypeScript
+pnpm build        # compile all packages
 pnpm typecheck    # type-check without emitting
 pnpm test         # run vitest suite
-pnpm start        # start the MCP server
-```
-
-Project structure:
-
-```text
-src/
-  index.ts            CLI entrypoint (stdio transport, startup error handling)
-  server.ts           McpServer factory and tool registration
-  context-store.ts    Filesystem operations for .opencontext/
-  validation.ts       Topic validation and input rules
-  types.ts            Shared constants, error classes, and result helpers
-test/
-  validation.test.ts  Unit tests for topic validation
-  context-store.test.ts  Unit tests for read/write/list operations
-examples/
-  plan-agent.md       Architect system prompt
-  build-agent.md      Developer system prompt
-README.md             User documentation
-LICENSE               MIT license
 ```
 
 ## License

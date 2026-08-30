@@ -2,9 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import GetStartedWizard from "@/components/GetStartedWizard";
 import ValueProp from "@/components/ValueProp";
-import ToolsGrid from "@/components/ToolsGrid";
-import AgentPrompts from "@/components/AgentPrompts";
-import GitStrategy from "@/components/GitStrategy";
+import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -15,9 +13,7 @@ export default function Home() {
         <Hero />
         <ValueProp />
         <GetStartedWizard />
-        <ToolsGrid />
-        <AgentPrompts />
-        <GitStrategy />
+        <Faq />
       </main>
       <Footer />
     </>
