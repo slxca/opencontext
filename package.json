@@ -1,6 +1,6 @@
 {
   "name": "opencontext-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Model Context Protocol server for persistent project-specific AI agent context.",
   "type": "module",
   "bin": {
@@ -39,6 +39,7 @@
   },
   "author": "slxca <hello@slxca.com> (https://slxca.com)",
   "funding": "https://github.com/sponsors/slxca",
+  "homepage": "https://opencntx.dev",
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"
