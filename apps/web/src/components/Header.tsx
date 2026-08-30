@@ -18,20 +18,18 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800/80 bg-black/80 backdrop-blur-xl">
-      <div className="mx-auto grid h-16 max-w-6xl grid-cols-3 items-center px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         {/* Logo - Left */}
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/logo_light.png"
-              alt="OpenContext"
-              width={160}
-              height={32}
-              className="h-8 w-auto"
-              priority
-            />
-          </Link>
-        </div>
+        <Link href="/" className="flex shrink-0 items-center">
+          <Image
+            src="/logo_light.png"
+            alt="OpenContext"
+            width={160}
+            height={32}
+            className="h-8 w-auto"
+            priority
+          />
+        </Link>
 
         {/* Desktop Nav - Center */}
         <nav className="hidden items-center justify-center gap-1 md:flex">
@@ -47,7 +45,7 @@ export default function Header() {
         </nav>
 
         {/* Desktop Actions - Right */}
-        <div className="flex items-center justify-end">
+        <div className="hidden items-center md:flex">
           <a
             href="https://github.com/slxca/opencontext"
             target="_blank"
@@ -61,7 +59,7 @@ export default function Header() {
 
         {/* Mobile menu button */}
         <button
-          className="absolute right-6 top-1/2 -translate-y-1/2 md:hidden text-zinc-400"
+          className="flex items-center md:hidden text-zinc-400"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
