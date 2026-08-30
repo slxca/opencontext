@@ -1,5 +1,5 @@
-import path from "node:path";
-import { CONTEXT_DIRECTORY_NAME, TOPIC_PATTERN, UserInputError } from "./types.js";
+import * as path from "node:path";
+import { CONTEXT_DIRECTORY_NAME, RESERVED_TOPICS, TOPIC_PATTERN, UserInputError } from "./types.js";
 
 /**
  * Options for configuring write guard behavior.
@@ -22,7 +22,7 @@ export interface GuardResult {
   /** Human-readable reason for rejection */
   reason?: string;
   /** Error code for programmatic handling */
-  code?: "EMPTY_CONTENT" | "PAYLOAD_TOO_LARGE" | "INVALID_TOPIC" | "PATH_TRAVERSAL" | "FORBIDDEN_PATTERN";
+  code?: "EMPTY_CONTENT" | "PAYLOAD_TOO_LARGE" | "INVALID_TOPIC" | "PATH_TRAVERSAL" | "FORBIDDEN_PATTERN" | "RESERVED_TOPIC";
 }
 
 /**
@@ -105,6 +105,14 @@ export function validateWritePayload(
       allowed: false,
       reason: "Topic must be snake_case or kebab-case using lowercase letters, numbers, underscores, or hyphens.",
       code: "INVALID_TOPIC",
+    };
+  }
+
+  if (RESERVED_TOPICS.has(trimmedTopic)) {
+    return {
+      allowed: false,
+      reason: `"${trimmedTopic}" is a reserved system topic and cannot be written directly.`,
+      code: "RESERVED_TOPIC",
     };
   }
 

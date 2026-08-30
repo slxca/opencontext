@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mkdir, rm, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
-import os from "node:os";
+import * as path from "node:path";
+import * as os from "node:os";
 import { ContextStore } from "../src/context-store.js";
 import { UserInputError } from "../src/types.js";
 
@@ -85,9 +85,9 @@ describe("ContextStore", () => {
       await store.saveContext("middle", "m");
 
       const result = await store.readContext();
-      expect(result).toContain("- alpha");
-      expect(result).toContain("- middle");
-      expect(result).toContain("- zebra");
+      expect(result).toContain("**alpha**");
+      expect(result).toContain("**middle**");
+      expect(result).toContain("**zebra**");
     });
 
     it("ignores non-.md files in .opencontext/", async () => {
@@ -98,9 +98,9 @@ describe("ContextStore", () => {
       await writeFile(path.join(dir, ".hidden"), "hidden");
 
       const result = await store.readContext();
-      expect(result).toContain("- keep");
-      expect(result).not.toContain("ignore");
-      expect(result).not.toContain("hidden");
+      expect(result).toContain("**keep**");
+      expect(result).not.toContain("ignore.txt");
+      expect(result).not.toContain(".hidden");
     });
   });
 

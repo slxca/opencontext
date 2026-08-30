@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { mkdir, rm, readFile, writeFile, access } from "node:fs/promises";
-import path from "node:path";
-import os from "node:os";
+import * as path from "node:path";
+import * as os from "node:os";
 import { validateWritePayload, sanitizeTopicPath } from "../src/validation.js";
 import { ContextStore } from "../src/context-store.js";
 import { UserInputError } from "../src/types.js";
