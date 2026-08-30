@@ -1,13 +1,20 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
+    paths:
+      - 'apps/web/**'
+      - 'packages/opencontext/**'
   pull_request:
     branches: [master]
+    paths:
+      - 'apps/web/**'
+      - 'packages/opencontext/**'
 
 jobs:
-  build:
+  build-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,15 +30,17 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+        working-directory: packages/opencontext
 
       - name: Build
         run: pnpm build
+        working-directory: packages/opencontext
 
-      - name: Test (packages only)
+      - name: Test
         run: pnpm test
         working-directory: packages/opencontext
 
-  lint:
+  build-web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +53,14 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+        working-directory: apps/web
+
+      - name: Build
+        run: pnpm build
+        working-directory: apps/web
 
       - name: Lint
         run: pnpm lint
