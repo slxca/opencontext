@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FileText, ExternalLink, FolderTree } from "lucide-react";
+import {FileText, ExternalLink, FolderTree, BookIcon, BookOpenIcon} from "lucide-react";
 import CopyButton from "./CopyButton";
 
 const markdownLines = [
@@ -110,13 +110,11 @@ export default function Hero() {
             />
           </div>
           <a
-            href="https://github.com/slxca/opencontext"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/docs"
             className="flex h-12 items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-6 text-sm font-medium text-zinc-300 transition-all hover:border-zinc-700 hover:bg-zinc-800"
           >
-            View on GitHub
-            <ExternalLink className="h-4 w-4" />
+            Read the Docs
+            <BookOpenIcon className="h-4 w-4" />
           </a>
         </motion.div>
 
