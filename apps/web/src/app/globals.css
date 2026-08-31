@@ -32,3 +32,17 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #27272a #09090b;
 }
+
+.bg-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.border-token {
+  border-color: rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease;
+}
+
+.border-token:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}

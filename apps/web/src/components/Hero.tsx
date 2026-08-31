@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {FileText, ExternalLink, FolderTree, BookIcon, BookOpenIcon} from "lucide-react";
+import {FileText, ExternalLink, FolderTree, BookIcon, BookOpenIcon, GitBranch} from "lucide-react";
 import CopyButton from "./CopyButton";
+import Link from "next/link";
 
 const markdownLines = [
   "# Architecture",
@@ -43,22 +44,10 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="mb-8 flex flex-wrap justify-center gap-3"
         >
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-blue-400 transition-colors hover:border-blue-500/30 hover:bg-blue-500/15 sm:text-[11px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-            MCP
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-violet-400 transition-colors hover:border-violet-500/30 hover:bg-violet-500/15 sm:text-[11px]">
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            STRICT TS
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-emerald-400 transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/15 sm:text-[11px]">
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            ZERO-CONFIG
-          </span>
+          <Link href={"https://github.com/slxca/opencontext/releases/tag/v1.1.0"} target={"_blank"} className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 sm:text-[11px]">
+            <GitBranch className="h-3 w-3" />
+            v1.1.0 Released — Enhanced Storage Guards & Topic Metadata
+          </Link>
         </motion.div>
 
         {/* Headline */}
@@ -68,7 +57,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mx-auto max-w-3xl text-center text-4xl font-bold tracking-tight text-white md:text-6xl md:leading-[1.1]"
         >
-          Persistent, Project-Local Memory for AI Coding Agents
+          Stop your coding agents from forgetting your architecture.
         </motion.h1>
 
         {/* Subheadline */}
@@ -78,13 +67,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-zinc-400 md:text-xl"
         >
-          Coding agents forget decisions between sessions. OpenContext MCP exposes
-          a lightweight Model Context Protocol server that enables AI agents to
-          read and write durable{" "}
-          <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 font-mono text-sm text-zinc-300">
-            .opencontext/
-          </code>{" "}
-          markdown rules.
+          Persistent, project-local memory for Cursor, OpenCode, and Claude Code. No vector hallucinations, no cloud subscriptions—just plain markdown in your Git tree.
         </motion.p>
 
         {/* CTAs */}
@@ -115,6 +98,14 @@ export default function Hero() {
           >
             Read the Docs
             <BookOpenIcon className="h-4 w-4" />
+          </a>
+          <a
+            href="https://github.com/slxca/opencontext"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-12 items-center gap-2 rounded-xl border border-zinc-700/80 bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          >
+            ★ Star on GitHub
           </a>
         </motion.div>
 
