@@ -1,9 +1,9 @@
 <p align="center">
   <a href="https://opencntx.dev">
     <picture>
-      <source srcset="apps/web/public/logo_light.png" media="(prefers-color-scheme: dark)">
+      <source srcset="apps/web/public/opencontext.png" media="(prefers-color-scheme: dark)">
       <source srcset="apps/web/public/logo_dark.png" media="(prefers-color-scheme: light)">
-      <img src="apps/web/public/logo_light.png" alt="OpenContext logo" width="300">
+      <img src="apps/web/public/opencontext.png" alt="OpenContext logo" width="500">
     </picture>
   </a>
 </p>
