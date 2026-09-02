@@ -71,7 +71,37 @@ Add OpenContext to your MCP settings file (`claude_desktop_config.json` or Curso
 | Tool | Parameters | Description |
 | --- | --- | --- |
 | `read_context` | `topic?` *(optional string)* | Reads a specific context topic, or returns the lightweight topic index (~100 tokens) if omitted. |
-| `save_context` | `topic` *(string)*, `content` *(string)* | Writes or mutates markdown memory inside `.opencontext/<topic>.md` with built-in write guards. |
+| `save_context` | `topic` *(string)*, `content` *(string)* | Writes or mutates markdown memory inside `.opencontext/<topic>.md` with built-in write guards and symlink protections. |
+| `delete_context` | `topic` *(string)* | Removes an obsolete topic file and automatically rebuilds the topic index. |
+
+---
+
+### ADR Lifecycle & Frontmatter
+
+Topics support optional YAML frontmatter to track lifecycle status — useful when architectural decisions evolve and old context should be visible but clearly flagged as outdated.
+
+````markdown
+---
+description: OAuth2 + PKCE authentication flow
+status: active
+supersedes: auth_v1
+---
+
+# Authentication v2
+
+Migrated from JWT to OAuth2 with PKCE.
+````
+
+**Supported frontmatter keys:**
+
+| Key | Values | Description |
+| --- | --- | --- |
+| `description` | string | Short summary used in the auto-generated index. |
+| `status` | `active` \| `deprecated` \| `superseded` | Lifecycle status. Defaults to `active` when omitted. |
+| `supersedes` | string | Topic name this topic replaces *(set on the newer topic)*. |
+| `superseded_by` | string | Topic name that replaced this one *(set on the older topic)*. |
+
+Non-active topics automatically receive `[DEPRECATED]` or `[SUPERSEDED]` badges in the auto-generated `index.md`, along with cross-references showing which topic replaced or was replaced.
 
 ---
 
@@ -82,8 +112,9 @@ Instruct your agents to automatically leverage project context. Add this snippet
 ```markdown
 Before making structural code changes, run `read_context` to inspect existing project topics and architectural decisions.
 
-Whenever a new architectural convention, database schema, or API rule is established or refactored, call `save_context` with a concise, topic-scoped markdown summary.
+Whenever a new architectural convention, database schema, or API rule is established or refactored, call `save_context` with a concise, topic-scoped markdown summary. Use YAML frontmatter (status, supersedes) when updating conventions to track lifecycle changes.
 
+When a topic becomes obsolete, call `delete_context` to remove it. For deprecated topics that should remain visible, set status: deprecated or status: superseded in the frontmatter instead of deleting.
 ```
 
 ---
