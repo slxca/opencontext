@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { mkdir, rm, readFile, writeFile, access } from "node:fs/promises";
+import { mkdir, rm, readFile, writeFile, access, symlink } from "node:fs/promises";
 import * as path from "node:path";
 import * as os from "node:os";
 import { validateWritePayload, sanitizeTopicPath } from "../src/validation.js";
@@ -275,6 +275,22 @@ describe("WriteGuard", () => {
       );
       
       consoleSpy.mockRestore();
+    });
+
+    it("rejects write to symlink topic file", async () => {
+      const dir = path.join(tmpDir, ".opencontext");
+      await mkdir(dir, { recursive: true });
+
+      // Create a symlink pointing to a harmless external target
+      const symlinkPath = path.join(dir, "evil.md");
+      const targetPath = path.join(os.tmpdir(), `opencontext-symlink-target-${Date.now()}`);
+      await writeFile(targetPath, "external content", "utf8");
+      await symlink(targetPath, symlinkPath);
+
+      await expect(store.saveContext("evil", "new content")).rejects.toThrow(UserInputError);
+
+      // Cleanup
+      await rm(targetPath, { force: true });
     });
   });
 });

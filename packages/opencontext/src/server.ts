@@ -82,5 +82,36 @@ export async function createOpenContextServer(
     },
   );
 
+  server.registerTool(
+    "delete_context",
+    {
+      title: "Delete Context",
+      description:
+        "Delete a saved OpenContext topic. The topic file will be removed from disk.",
+      inputSchema: {
+        topic: z
+          .string()
+          .min(1)
+          .describe(
+            "Topic name in snake_case or kebab-case to delete.",
+          ),
+      },
+    },
+    async ({ topic }) => {
+      if (resolvedConfig.disabled) {
+        return textResult("OpenContext is currently paused. Tool access is disabled via configuration.");
+      }
+      if (resolvedConfig.readOnly) {
+        return textResult("OpenContext is in read-only mode. Write operations are disabled via configuration.", true);
+      }
+      try {
+        const result = await store.deleteContext(topic);
+        return textResult(result);
+      } catch (error) {
+        return textResult(`OpenContext error: ${getErrorMessage(error)}`, true);
+      }
+    },
+  );
+
   return server;
 }

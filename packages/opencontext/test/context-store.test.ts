@@ -111,4 +111,43 @@ describe("ContextStore", () => {
       expect(topics).toEqual([]);
     });
   });
+
+  describe("deleteContext", () => {
+    it("deletes an existing topic", async () => {
+      await store.saveContext("doomed", "# Doomed\nDelete me.");
+      const result = await store.deleteContext("doomed");
+      expect(result).toContain("Deleted");
+
+      // File should no longer exist
+      const dir = path.join(tmpDir, ".opencontext");
+      await expect(readFile(path.join(dir, "doomed.md"), "utf8")).rejects.toThrow();
+    });
+
+    it("throws UserInputError for nonexistent topic", async () => {
+      await expect(store.deleteContext("ghost")).rejects.toThrow(UserInputError);
+    });
+
+    it("throws UserInputError for invalid topic name", async () => {
+      await expect(store.deleteContext("BAD NAME")).rejects.toThrow(UserInputError);
+    });
+
+    it("rebuilds index after deletion when autoIndex is true", async () => {
+      await store.saveContext("keep", "# Keep");
+      await store.saveContext("remove", "# Remove");
+
+      // Generate index first
+      await store.readContext();
+      const dir = path.join(tmpDir, ".opencontext");
+      const beforeIndex = await readFile(path.join(dir, "index.md"), "utf8");
+      expect(beforeIndex).toContain("**remove**");
+
+      // Delete
+      await store.deleteContext("remove");
+
+      // Index should be rebuilt without the deleted topic
+      const afterIndex = await readFile(path.join(dir, "index.md"), "utf8");
+      expect(afterIndex).toContain("**keep**");
+      expect(afterIndex).not.toContain("**remove**");
+    });
+  });
 });

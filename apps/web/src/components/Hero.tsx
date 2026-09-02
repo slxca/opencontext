@@ -44,9 +44,9 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="mb-8 flex flex-wrap justify-center gap-3"
         >
-          <Link href={"https://github.com/slxca/opencontext/releases/tag/v1.1.0"} target={"_blank"} className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 sm:text-[11px]">
+          <Link href={"https://github.com/slxca/opencontext/releases/tag/v1.2.0"} target={"_blank"} className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 sm:text-[11px]">
             <GitBranch className="h-3 w-3" />
-            v1.1.0 Released — Enhanced Storage Guards & Topic Metadata
+            v1.2.0 Released — Structured Frontmatter & Context Deletion
           </Link>
         </motion.div>
 

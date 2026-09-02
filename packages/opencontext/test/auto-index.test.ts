@@ -4,6 +4,7 @@ import * as path from "node:path";
 import * as os from "node:os";
 import { ContextStore } from "../src/context-store.js";
 import { UserInputError } from "../src/types.js";
+import { DEFAULT_CONFIG } from "../src/config.js";
 
 function getTmpDir(): string {
   return path.join(
@@ -192,6 +193,94 @@ describe("Auto-Generated Context Index", () => {
       // index.md should be unchanged
       const afterContent = await readFile(indexPath, "utf8");
       expect(afterContent).toBe(beforeContent);
+    });
+  });
+
+  describe("6. autoIndex: false behavior", () => {
+    it("returns plain topic list without writing index.md", async () => {
+      const customStore = new ContextStore(tmpDir, {
+        ...DEFAULT_CONFIG,
+        autoIndex: false,
+      });
+
+      await customStore.saveContext("alpha", "# Alpha");
+      await customStore.saveContext("beta", "# Beta");
+
+      const result = await customStore.readContext();
+
+      // Should contain both topic names
+      expect(result).toContain("- alpha");
+      expect(result).toContain("- beta");
+
+      // Should NOT create index.md
+      const indexPath = path.join(tmpDir, ".opencontext", "index.md");
+      await expect(readFile(indexPath, "utf8")).rejects.toThrow();
+    });
+
+    it("still rebuilds index when autoIndex is true (default)", async () => {
+      await store.saveContext("topic", "# Content");
+      await store.readContext();
+
+      const indexPath = path.join(tmpDir, ".opencontext", "index.md");
+      const content = await readFile(indexPath, "utf8");
+      expect(content).toContain("**topic**");
+    });
+  });
+
+  describe("7. Structured frontmatter", () => {
+    it("extracts description from frontmatter description field", async () => {
+      const content = "---\ndescription: REST conventions.\n---\n\n# API";
+      await store.saveContext("api-fm", content);
+
+      const result = await store.readContext();
+      expect(result).toContain("> REST conventions.");
+    });
+
+    it("shows [DEPRECATED] badge for deprecated topics", async () => {
+      const content = "---\ndescription: Old auth.\nstatus: deprecated\n---\n\n# Old Auth";
+      await store.saveContext("old-auth", content);
+
+      const result = await store.readContext();
+      expect(result).toContain("[DEPRECATED]");
+      expect(result).toContain("**old-auth**");
+    });
+
+    it("shows [SUPERSEDED] badge for superseded topics", async () => {
+      const content =
+        "---\ndescription: V1 contracts.\nstatus: superseded\nsuperseded_by: api-v2\n---\n\n# V1";
+      await store.saveContext("api-v1", content);
+
+      const result = await store.readContext();
+      expect(result).toContain("[SUPERSEDED]");
+      expect(result).toContain("superseded by: `api-v2`");
+    });
+
+    it("new topic can reference what it supersedes", async () => {
+      const content =
+        "---\ndescription: V2 contracts.\nstatus: active\nsupersedes: api-v1\n---\n\n# V2";
+      await store.saveContext("api-v2", content);
+
+      const result = await store.readContext();
+      expect(result).toContain("supersedes: `api-v1`");
+      expect(result).not.toContain("[DEPRECATED]");
+    });
+
+    it("shows no badge for active status", async () => {
+      const content = "---\ndescription: Current rules.\nstatus: active\n---\n\n# Rules";
+      await store.saveContext("rules-active", content);
+
+      const result = await store.readContext();
+      expect(result).not.toContain("[DEPRECATED]");
+      expect(result).not.toContain("[SUPERSEDED]");
+    });
+
+    it("handles frontmatter with quoted values", async () => {
+      const content = '---\ndescription: "Quoted desc"\nstatus: "deprecated"\n---\n\n# X';
+      await store.saveContext("quoted-fm", content);
+
+      const result = await store.readContext();
+      expect(result).toContain("> Quoted desc");
+      expect(result).toContain("[DEPRECATED]");
     });
   });
 });

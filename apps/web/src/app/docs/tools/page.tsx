@@ -152,6 +152,108 @@ export default function ToolsPage() {
           </div>
         </section>
 
+        {/* delete_context */}
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-white">
+            delete_context
+          </h2>
+          <p className="mb-4 text-zinc-400">
+            Deletes a saved topic file from disk. Automatically rebuilds the
+            index when{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              autoIndex
+            </code>{" "}
+            is enabled.
+          </p>
+
+          <h3 className="mb-2 text-lg font-medium text-white">Arguments</h3>
+          <div className="mb-4 overflow-hidden rounded-lg border border-zinc-800">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-800 bg-zinc-900/50">
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Type
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Required
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                <tr>
+                  <td className="px-4 py-2 font-mono text-xs text-zinc-300">
+                    topic
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">string</td>
+                  <td className="px-4 py-2 text-zinc-400">yes</td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    Lowercase snake_case or kebab-case topic name to delete
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="mb-2 text-lg font-medium text-white">Behaviors</h3>
+          <ul className="mb-4 list-disc space-y-1 pl-6 text-zinc-400">
+            <li>
+              Respects{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                readOnly
+              </code>{" "}
+              and{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                disabled
+              </code>{" "}
+              config modes.
+            </li>
+            <li>
+              Removes{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                .opencontext/&lt;topic&gt;.md
+              </code>{" "}
+              from disk.
+            </li>
+            <li>
+              Triggers index rebuild if{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                autoIndex
+              </code>{" "}
+              is true.
+            </li>
+            <li>
+              Throws <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">INVALID_TOPIC</code> for
+              malformed topic names.
+            </li>
+            <li>
+              Throws <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">NOT_FOUND</code> if the
+              topic does not exist.
+            </li>
+          </ul>
+
+          <h3 className="mb-2 text-lg font-medium text-white">Example</h3>
+          <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center gap-2 border-b border-zinc-800/80 bg-zinc-950 px-4 py-2">
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="ml-2 text-xs text-zinc-500">user input</span>
+            </div>
+            <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
+              <code>
+                Remove the deprecated auth-legacy topic since we migrated to
+                the new auth flow.
+              </code>
+            </pre>
+          </div>
+        </section>
+
         {/* Version Control */}
         <section>
           <h2 className="mb-4 text-xl font-semibold text-white">

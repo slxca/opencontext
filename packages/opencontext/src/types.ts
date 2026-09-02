@@ -2,13 +2,32 @@
 export const SERVER_NAME = "opencontext-mcp";
 
 /** Current server version for compatibility checks. */
-export const SERVER_VERSION = "1.1.0";
+export const SERVER_VERSION = "1.2.0";
 
 /** Filename for the auto-generated context index. */
 export const INDEX_FILENAME = "index.md";
 
 /** Topic names reserved by the system — cannot be written by external agents. */
 export const RESERVED_TOPICS: ReadonlySet<string> = new Set(["index"]);
+
+/** Allowed values for the topic status field in YAML frontmatter. */
+export type TopicStatus = "active" | "deprecated" | "superseded";
+
+/** Parsed YAML frontmatter from a topic file. All fields optional. */
+export interface TopicFrontmatter {
+  description?: string;
+  status?: TopicStatus;
+  /** The topic this one replaces (used by the newer topic). */
+  supersedes?: string;
+  /** The topic that replaced this one (used by the older topic). */
+  superseded_by?: string;
+}
+
+/** Badge prefix used in index.md for non-active topics. */
+export const STATUS_BADGES: ReadonlyMap<TopicStatus, string> = new Map([
+  ["deprecated", "[DEPRECATED]"],
+  ["superseded", "[SUPERSEDED]"],
+]);
 
 /**
  * Regex pattern for validating topic names.

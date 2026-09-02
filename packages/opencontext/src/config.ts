@@ -43,6 +43,7 @@ const CONFIG_CANDIDATES = [".opencontext.jsonc", ".opencontext.json"] as const;
 /**
  * Strips JSONC content into parseable JSON by removing comments and trailing commas.
  * Handles single-line (//), multi-line (/* * /), and trailing commas.
+ * Trailing comma removal is token-aware to avoid modifying string literals.
  */
 function stripJsonComments(raw: string): string {
   let result = "";
@@ -91,12 +92,38 @@ function stripJsonComments(raw: string): string {
       continue;
     }
 
+    // Trailing comma: skip comma if followed by optional whitespace/comments then } or ]
+    if (ch === ",") {
+      let j = i + 1;
+      // Skip whitespace and comments to find the next meaningful token
+      while (j < len) {
+        if (raw[j] === " " || raw[j] === "\t" || raw[j] === "\n" || raw[j] === "\r") {
+          j++;
+        } else if (raw[j] === "/" && j + 1 < len && raw[j + 1] === "/") {
+          while (j < len && raw[j] !== "\n") j++;
+        } else if (raw[j] === "/" && j + 1 < len && raw[j + 1] === "*") {
+          j += 2;
+          while (j < len - 1 && !(raw[j] === "*" && raw[j + 1] === "/")) j++;
+          j += 2;
+        } else {
+          break;
+        }
+      }
+      if (j < len && (raw[j] === "}" || raw[j] === "]")) {
+        i = j; // skip comma and whitespace/comments, continue from closing bracket
+        continue;
+      }
+      // Not a trailing comma — keep it
+      result += ch;
+      i++;
+      continue;
+    }
+
     result += ch;
     i++;
   }
 
-  // Strip trailing commas before closing braces/brackets
-  return result.replace(/,(\s*[}\]])/g, "$1");
+  return result;
 }
 
 function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {

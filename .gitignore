@@ -10,9 +10,6 @@ out/
 .next/
 .vercel/
 
-# OpenContext storage (if used locally in dev)
-.opencontext/
-
 # Environment and IDE
 .env
 .env.*

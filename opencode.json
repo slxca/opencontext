@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.dev/schema.json",
+  "mcp": {
+    "opencontext": {
+      "type": "local",
+      "command": ["node", "packages/opencontext/dist/index.js"],
+      "enabled": true
+    }
+  }
+}

@@ -100,4 +100,17 @@ describe("loadConfig", () => {
 
     consoleSpy.mockRestore();
   });
+
+  it("does not strip commas inside string values", async () => {
+    const jsonc = `{
+      "path": "a,b}",
+      "readOnly": true
+    }`;
+
+    await writeFile(path.join(tmpDir, ".opencontext.jsonc"), jsonc, "utf8");
+
+    const config = await loadConfig(tmpDir);
+    expect(config.path).toBe("a,b}");
+    expect(config.readOnly).toBe(true);
+  });
 });

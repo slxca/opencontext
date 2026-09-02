@@ -1,6 +1,6 @@
-import { mkdir, readdir, readFile, writeFile, stat } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile, stat, lstat, unlink } from "node:fs/promises";
 import * as path from "node:path";
-import { INDEX_FILENAME, UserInputError, isNodeError } from "./types.js";
+import { INDEX_FILENAME, UserInputError, isNodeError, STATUS_BADGES, type TopicFrontmatter, type TopicStatus } from "./types.js";
 import { validateTopic, validateWritePayload, sanitizeTopicPath } from "./validation.js";
 import { type ResolvedConfig, DEFAULT_CONFIG } from "./config.js";
 
@@ -49,6 +49,22 @@ export class ContextStore {
     const topic = validateTopic(topicInput);
     const filePath = sanitizeTopicPath(this.contextDir, topic);
 
+    // Reject writes to existing symlinks — prevents symlink traversal attacks
+    try {
+      const fileStat = await lstat(filePath);
+      if (fileStat.isSymbolicLink()) {
+        throw new UserInputError(
+          `Refusing to overwrite symlink at ${this.config.path}/${topic}.md. Delete the symlink first.`,
+        );
+      }
+    } catch (error) {
+      if (isNodeError(error) && error.code === "ENOENT") {
+        // File does not exist yet — normal case, continue
+      } else {
+        throw error;
+      }
+    }
+
     await mkdir(this.contextDir, { recursive: true });
     await writeFile(filePath, content, "utf8");
 
@@ -85,7 +101,39 @@ export class ContextStore {
       return `No OpenContext topics found in ${this.config.path}/. Use save_context to create one.`;
     }
 
+    if (!this.config.autoIndex) {
+      return topics.map((t) => `- ${t}`).join("\n");
+    }
+
     return this.rebuildContextIndex();
+  }
+
+  /**
+   * Deletes a context topic file from the context directory.
+   * @param topicInput - Topic name to delete
+   * @returns Success message with confirmation
+   * @throws UserInputError if topic doesn't exist or is invalid
+   */
+  public async deleteContext(topicInput: string): Promise<string> {
+    const topic = validateTopic(topicInput);
+    const filePath = sanitizeTopicPath(this.contextDir, topic);
+
+    try {
+      await unlink(filePath);
+    } catch (error) {
+      if (isNodeError(error) && error.code === "ENOENT") {
+        throw new UserInputError(
+          `No context found for topic "${topic}" at ${this.config.path}/${topic}.md.`,
+        );
+      }
+      throw error;
+    }
+
+    if (this.config.autoIndex) {
+      await this.rebuildContextIndex();
+    }
+
+    return `Deleted context topic "${topic}" from ${this.config.path}/${topic}.md.`;
   }
 
   /**
@@ -111,6 +159,60 @@ export class ContextStore {
   }
 
   /**
+   * Parses YAML frontmatter from markdown content.
+   * Returns extracted fields or empty object if no frontmatter found.
+   * Uses simple line-by-line parsing — no external YAML dependency.
+   */
+  private parseFrontmatter(content: string): TopicFrontmatter {
+    const trimmed = content.trim();
+    if (!trimmed.startsWith("---")) {
+      return {};
+    }
+
+    const endIdx = trimmed.indexOf("---", 3);
+    if (endIdx === -1) {
+      return {};
+    }
+
+    const block = trimmed.slice(3, endIdx);
+    const result: TopicFrontmatter = {};
+
+    for (const line of block.split("\n")) {
+      const trimmedLine = line.trim();
+      if (!trimmedLine || trimmedLine.startsWith("#")) continue;
+
+      const colonIdx = trimmedLine.indexOf(":");
+      if (colonIdx === -1) continue;
+
+      const key = trimmedLine.slice(0, colonIdx).trim();
+      let value = trimmedLine.slice(colonIdx + 1).trim();
+
+      // Strip surrounding quotes
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+
+      if (key === "description") {
+        result.description = value;
+      } else if (
+        key === "status" &&
+        (value === "active" || value === "deprecated" || value === "superseded")
+      ) {
+        result.status = value;
+      } else if (key === "supersedes") {
+        result.supersedes = value;
+      } else if (key === "superseded_by") {
+        result.superseded_by = value;
+      }
+    }
+
+    return result;
+  }
+
+  /**
    * Extracts a short description from markdown content.
    * Strategy: frontmatter description → first heading → first paragraph → fallback.
    * @param content - Raw markdown content
@@ -122,16 +224,10 @@ export class ContextStore {
       return "No summary available.";
     }
 
-    // Strategy A: YAML frontmatter with description key
-    if (trimmed.startsWith("---")) {
-      const endIdx = trimmed.indexOf("---", 3);
-      if (endIdx !== -1) {
-        const frontmatter = trimmed.slice(3, endIdx);
-        const descMatch = frontmatter.match(/description:\s*["']?(.+?)["']?\s*$/m);
-        if (descMatch?.[1]) {
-          return descMatch[1].slice(0, 120);
-        }
-      }
+    // Use structured frontmatter parser
+    const fm = this.parseFrontmatter(content);
+    if (fm.description) {
+      return fm.description.slice(0, 120);
     }
 
     const lines = trimmed.split("\n");
@@ -191,6 +287,9 @@ export class ContextStore {
       description: string;
       date: string;
       sizeBytes: number;
+      status: TopicStatus | undefined;
+      supersedes: string | undefined;
+      superseded_by: string | undefined;
     }> = [];
 
     for (const entry of topicFiles) {
@@ -201,8 +300,18 @@ export class ContextStore {
       const description = this.extractDescription(content);
       const date = fileStat.mtime.toISOString().slice(0, 10);
       const sizeBytes = Buffer.byteLength(content, "utf8");
+      const fm = this.parseFrontmatter(content);
 
-      topicEntries.push({ topic, filename: entry.name, description, date, sizeBytes });
+      topicEntries.push({
+        topic,
+        filename: entry.name,
+        description,
+        date,
+        sizeBytes,
+        status: fm.status,
+        supersedes: fm.supersedes,
+        superseded_by: fm.superseded_by,
+      });
     }
 
     const lines: string[] = [
@@ -217,7 +326,16 @@ export class ContextStore {
       const sizeStr = t.sizeBytes >= 1024
         ? `${(t.sizeBytes / 1024).toFixed(1)} KB`
         : `${t.sizeBytes} B`;
-      lines.push(`- **${t.topic}** (\`${t.filename}\`) - Updated: ${t.date} (${sizeStr})`);
+      const badge = t.status && t.status !== "active"
+        ? ` ${STATUS_BADGES.get(t.status) ?? `[${t.status.toUpperCase()}]`}`
+        : "";
+      const supersedesNote = t.supersedes
+        ? ` (supersedes: \`${t.supersedes}\`)`
+        : "";
+      const supersededByNote = t.superseded_by
+        ? ` (superseded by: \`${t.superseded_by}\`)`
+        : "";
+      lines.push(`- **${t.topic}**${badge} (\`${t.filename}\`) - Updated: ${t.date} (${sizeStr})${supersedesNote}${supersededByNote}`);
       lines.push(`  > ${t.description}`);
     }
 

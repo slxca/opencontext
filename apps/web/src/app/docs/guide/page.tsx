@@ -190,6 +190,139 @@ Content: "- Use const over let when possible
             </Link>
           </div>
         </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-white">
+            Topic Lifecycle &amp; ADR-Style Frontmatter
+          </h2>
+          <p className="mb-4 text-zinc-400">
+            Topics support optional YAML frontmatter to track their lifecycle
+            status — useful when decisions evolve over time and old context
+            should be visible but clearly flagged as outdated.
+          </p>
+
+          <h3 className="mb-2 text-lg font-medium text-white">
+            Frontmatter Fields
+          </h3>
+          <div className="mb-4 overflow-hidden rounded-lg border border-zinc-800">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-800 bg-zinc-900/50">
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Field
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Type
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-zinc-300">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                <tr>
+                  <td className="px-4 py-2 font-mono text-xs text-zinc-300">
+                    description
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">string</td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    Short summary used in the auto-generated index
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-mono text-xs text-zinc-300">
+                    status
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    active | deprecated | superseded
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    Lifecycle status. Defaults to active when omitted.
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-mono text-xs text-zinc-300">
+                    supersedes
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">string</td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    Topic name this topic replaces (used by the newer topic)
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-mono text-xs text-zinc-300">
+                    superseded_by
+                  </td>
+                  <td className="px-4 py-2 text-zinc-400">string</td>
+                  <td className="px-4 py-2 text-zinc-400">
+                    Topic name that replaced this one (used by the older topic)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="mb-2 text-lg font-medium text-white">Example</h3>
+          <div className="mb-4 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center gap-2 border-b border-zinc-800/80 bg-zinc-950 px-4 py-2">
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="ml-2 text-xs text-zinc-500">
+                auth-v2.md (newer topic)
+              </span>
+            </div>
+            <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
+              <code>{`---
+description: OAuth2 + PKCE authentication flow
+status: active
+supersedes: auth-legacy
+---
+
+# Authentication v2
+
+Migrated from JWT to OAuth2 with PKCE.`}</code>
+            </pre>
+          </div>
+          <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center gap-2 border-b border-zinc-800/80 bg-zinc-950 px-4 py-2">
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="ml-2 text-xs text-zinc-500">
+                auth-legacy.md (older topic)
+              </span>
+            </div>
+            <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
+              <code>{`---
+description: JWT-based authentication (no longer used)
+status: superseded
+superseded_by: auth-v2
+---
+
+# Legacy Auth
+
+Deprecated in favor of auth-v2.`}</code>
+            </pre>
+          </div>
+
+          <p className="mt-4 text-zinc-400">
+            The auto-generated{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              index.md
+            </code>{" "}
+            will display badges like{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              [DEPRECATED]
+            </code>{" "}
+            and{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              [SUPERSEDED]
+            </code>{" "}
+            next to non-active topics, along with cross-references showing
+            which topic replaced or was replaced.
+          </p>
+        </section>
       </motion.div>
     </div>
   );
