@@ -1,6 +1,6 @@
 {
   "name": "opencontext-mcp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Model Context Protocol server for persistent project-specific AI agent context.",
   "type": "module",
   "bin": {

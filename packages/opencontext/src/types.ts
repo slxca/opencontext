@@ -2,7 +2,7 @@
 export const SERVER_NAME = "opencontext-mcp";
 
 /** Current server version for compatibility checks. */
-export const SERVER_VERSION = "1.2.0";
+export const SERVER_VERSION = "1.2.1";
 
 /** Filename for the auto-generated context index. */
 export const INDEX_FILENAME = "index.md";

@@ -343,6 +343,7 @@ export class ContextStore {
     lines.push("---");
     lines.push("*To read a specific context topic, call `read_context` with the topic name.*");
     lines.push("");
+    lines.push("*OpenContext is open-source. Consider starring on [GitHub](https://github.com/slxca/opencontext).*");
 
     const indexContent = lines.join("\n");
     const indexPath = path.join(this.contextDir, INDEX_FILENAME);
