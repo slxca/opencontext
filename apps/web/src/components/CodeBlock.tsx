@@ -23,7 +23,7 @@ export default function CodeBlock({
       }
     >
       <div className="flex items-center justify-between border-b border-zinc-800/80 bg-zinc-900/80 px-4 py-3">
-        <span className="font-mono text-xs text-zinc-500">{label}</span>
+        <span className="font-mono text-xs text-zinc-400">{label}</span>
         <CopyButton text={code} />
       </div>
       <pre

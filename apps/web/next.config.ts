@@ -15,7 +15,7 @@ const securityHeaders = [
   },
   {
     key: "X-Frame-Options",
-    value: "SAMEORIGIN",
+    value: "DENY",
   },
   {
     key: "X-XSS-Protection",
@@ -24,6 +24,10 @@ const securityHeaders = [
   {
     key: "Referrer-Policy",
     value: "strict-origin-when-cross-origin",
+  },
+  {
+    key: "Cross-Origin-Opener-Policy",
+    value: "same-origin",
   },
   {
     key: "Permissions-Policy",

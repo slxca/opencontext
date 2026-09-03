@@ -124,7 +124,7 @@ export default function Hero() {
             <div className="h-3 w-3 rounded-full bg-zinc-700" />
             <div className="h-3 w-3 rounded-full bg-zinc-700" />
             <div className="h-3 w-3 rounded-full bg-zinc-700" />
-            <div className="ml-3 flex min-w-0 items-center gap-2 overflow-hidden rounded-md border border-zinc-800 bg-zinc-900 px-3 py-1 font-mono text-xs text-zinc-500">
+            <div className="ml-3 flex min-w-0 items-center gap-2 overflow-hidden rounded-md border border-zinc-800 bg-zinc-900 px-3 py-1 font-mono text-xs text-zinc-400">
               <FolderTree className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
               <span className="truncate text-zinc-400">project / .opencontext</span>
             </div>
@@ -142,21 +142,21 @@ export default function Hero() {
               <pre className="font-mono text-sm leading-7">
                 <span className="text-zinc-100">.opencontext/</span>
                 {"\n"}
-                <span className="text-zinc-500">{"  "}</span>
+                <span className="text-zinc-400">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-400" />
                   <span>├── architecture.md</span>
                 </span>
                 {"\n"}
-                <span className="text-zinc-500">{"  "}</span>
+                <span className="text-zinc-400">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-400" />
                   <span>├── api-contracts.md</span>
                 </span>
                 {"\n"}
-                <span className="text-zinc-500">{"  "}</span>
+                <span className="text-zinc-400">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-400" />
                   <span>└── coding_rules.md</span>
                 </span>
               </pre>
@@ -173,14 +173,14 @@ export default function Hero() {
               <pre className="font-mono text-sm leading-6 text-zinc-400">
                 {markdownLines.map((line, i) => (
                   <div key={i} className="grid grid-cols-[2rem_1fr] gap-3">
-                    <span className="select-none text-right text-zinc-500">
+                    <span className="select-none text-right text-zinc-400">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {line.startsWith("##") || line.startsWith("###") ? (
                       <span className="text-zinc-200 font-medium">{line}</span>
                     ) : line.startsWith("- ") ? (
                       <span>
-                        <span className="text-zinc-500">- </span>
+                        <span className="text-zinc-400">- </span>
                         {line.slice(2)}
                       </span>
                     ) : line.startsWith("**") ? (
