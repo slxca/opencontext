@@ -52,11 +52,12 @@ export default function Hero() {
 
         {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mx-auto max-w-3xl text-center text-4xl font-bold tracking-tight text-white md:text-6xl md:leading-[1.1]"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mx-auto max-w-3xl text-center text-4xl font-bold tracking-tight text-white md:text-6xl md:leading-[1.1]"
         >
+            <span className="block text-base md:text-lg font-mono text-black font-medium mb-3 uppercase tracking-wider">
+              OpenContext MCP
+            </span>
           Stop your coding agents from forgetting your architecture.
         </motion.h1>
 
@@ -67,7 +68,10 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-zinc-400 md:text-xl"
         >
-          Persistent, project-local memory for Cursor, OpenCode, and Claude Code. No vector hallucinations, no cloud subscriptions—just plain markdown in your Git tree.
+          A Model Context Protocol (MCP) server that gives Cursor, OpenCode, and
+          Claude persistent, project-local memory. Track architecture decisions
+          in plain markdown with ADR-style frontmatter directly inside Git—no
+          cloud, no vector hallucinations.
         </motion.p>
 
         {/* CTAs */}

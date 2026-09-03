@@ -16,21 +16,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://opencntx.dev"),
   title: {
-    default: "OpenContext — Persistent Memory for AI Coding Agents",
-    template: "%s | OpenContext",
+    default:
+      "OpenContext - Git-Native Memory & MCP Server for AI Coding Agents",
+    template: "%s | OpenContext - Git-Native AI Agent Memory",
   },
   description:
-    "Persistent, project-local memory for AI coding agents. Exposes a lightweight MCP server that lets agents read and write durable markdown rules inside .opencontext/.",
+    "Persistent, zero-cloud Model Context Protocol (MCP) server for Cursor, OpenCode, and Claude. Track project context in plain markdown with ADR-style frontmatter directly inside Git.",
   keywords: [
-    "MCP",
+    "OpenContext",
+    "OpenContext MCP",
+    "MCP Server",
+    "AI agent memory",
+    "Cursor memory",
+    "OpenCode MCP",
+    "persistent context",
     "Model Context Protocol",
-    "AI coding agents",
-    "context memory",
-    "opencontext",
-    "Cursor",
-    "Claude",
-    "OpenCode",
-    "developer tools",
+    "local agent memory",
   ],
   authors: [{ name: "slxca" }],
   creator: "slxca",
@@ -40,9 +41,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://opencntx.dev",
     siteName: "OpenContext",
-    title: "OpenContext — Persistent Memory for AI Coding Agents",
+    title: "OpenContext - Git-Native Memory & MCP Server for AI Coding Agents",
     description:
-      "Persistent, project-local memory for AI coding agents. Exposes a lightweight MCP server that lets agents read and write durable markdown rules inside .opencontext/.",
+      "Persistent, zero-cloud Model Context Protocol (MCP) server for Cursor, OpenCode, and Claude. Track project context in plain markdown with ADR-style frontmatter directly inside Git.",
     images: [
       {
         url: "/og.png",
@@ -54,9 +55,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "OpenContext — Persistent Memory for AI Coding Agents",
+    title: "OpenContext - Git-Native Memory & MCP Server for AI Coding Agents",
     description:
-      "Persistent, project-local memory for AI coding agents via MCP.",
+      "Persistent, zero-cloud Model Context Protocol (MCP) server for Cursor, OpenCode, and Claude. Track project context in plain markdown with ADR-style frontmatter directly inside Git.",
     images: ["/og.png"],
   },
   icons: {
@@ -107,6 +108,25 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "OpenContext",
+  operatingSystem: "Cross-platform",
+  applicationCategory: "DeveloperApplication",
+  url: "https://opencntx.dev",
+  downloadUrl: "https://www.npmjs.com/package/opencontext-mcp",
+  sameAs: [
+    "https://github.com/slxca/opencontext",
+    "https://www.npmjs.com/package/opencontext-mcp",
+  ],
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -119,6 +139,10 @@ export default function RootLayout({
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-black text-zinc-100">
         {children}
