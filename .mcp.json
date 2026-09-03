@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "opencontext": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "opencontext-mcpx"
+      ]
+    }
+  }
+}
+

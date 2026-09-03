@@ -1,0 +1,10 @@
+{
+  "path": ".opencontext",
+  "readOnly": false,
+  "autoIndex": true,
+  "guard": {
+    "enabled": true,
+    "maxFileSizeKb": 50,
+    "strictPatternCheck": true
+  }
+}
