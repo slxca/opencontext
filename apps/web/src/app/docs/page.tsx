@@ -24,6 +24,11 @@ const features = [
     description: "Input validation, size limits, and prompt injection protection",
     href: "/docs/guard",
   },
+  {
+    title: "Remote Access (HTTP)",
+    description: "Serve the MCP server over the network",
+    href: "/docs/http",
+  },
 ];
 
 const integrations = [

@@ -10,6 +10,12 @@ export const INDEX_FILENAME = "index.md";
 /** Package name published on npm, launched via npx in generated configs. */
 export const OPENCONTEXT_MCP_PACKAGE = "opencontext-mcp";
 
+/** Default host the HTTP(S) server binds to. */
+export const DEFAULT_HTTP_HOST = "127.0.0.1";
+
+/** Default port the HTTP(S) server listens on. */
+export const DEFAULT_HTTP_PORT = 3032;
+
 /** Topic names reserved by the system — cannot be written by external agents. */
 export const RESERVED_TOPICS: ReadonlySet<string> = new Set(["index"]);
 

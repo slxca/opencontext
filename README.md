@@ -84,6 +84,22 @@ Add OpenContext to your MCP settings file (`claude_desktop_config.json` or Curso
 
 ---
 
+### Remote Access (HTTP)
+
+Expose the MCP server over the network with the Streamable HTTP transport. The endpoint URL is printed to stderr on startup.
+
+```bash
+# Plain HTTP on 127.0.0.1:3032 (default)
+opencontext-mcp --http
+
+# Custom port / bind to all interfaces
+opencontext-mcp server --http --port 8787 --host 0.0.0.0
+```
+
+The server listens at `http://<host>:<port>/mcp` (stateless Streamable HTTP — one request at a time, no sessions). `GET /` returns basic server info, handy for a browser health check.
+
+---
+
 ### Core Tools
 
 | Tool | Parameters | Description |

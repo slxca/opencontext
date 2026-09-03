@@ -23,6 +23,7 @@ const sidebarNav = [
       { label: "Cursor", href: "/docs/cursor" },
       { label: "Claude Desktop", href: "/docs/claude" },
       { label: "Windsurf", href: "/docs/windsurf" },
+      { label: "Remote Access (HTTP)", href: "/docs/http" },
     ],
   },
   {

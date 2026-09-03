@@ -117,3 +117,6 @@ export async function createOpenContextServer(
 
   return server;
 }
+
+export { startHttpServer } from "./http.js";
+export type { HttpServerOptions, HttpServerHandle } from "./http.js";

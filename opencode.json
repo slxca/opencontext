@@ -2,12 +2,8 @@
   "$schema": "https://opencode.dev/schema.json",
   "mcp": {
     "opencontext": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "opencontext-mcp"
-      ],
+      "type": "remote",
+      "url": "http://127.0.0.1:3032/mcp",
       "enabled": true
     }
   }

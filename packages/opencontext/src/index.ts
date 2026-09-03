@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createOpenContextServer } from "./server/index.js";
+import { createOpenContextServer, startHttpServer } from "./server/index.js";
 import { SERVER_NAME, SERVER_VERSION } from "./shared/constants.js";
 import { getErrorMessage } from "./shared/errors.js";
 import { parseArgs, printHelp, printVersion, CliError } from "./cli/index.js";
@@ -38,6 +38,16 @@ async function main(): Promise<void> {
 
     case "server":
     default: {
+      if (args.transport === "http") {
+        const handle = await startHttpServer({
+          host: args.host,
+          port: args.port,
+          buildServer: () => createOpenContextServer(),
+        });
+        process.stderr.write(`[opencontext] v${SERVER_VERSION} active. ${handle.url}\n`);
+        break;
+      }
+
       const server = await createOpenContextServer();
       const transport = new StdioServerTransport();
       await server.connect(transport);
