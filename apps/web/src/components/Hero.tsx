@@ -83,7 +83,7 @@ export default function Hero() {
         >
           <div className="flex h-12 items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-1 py-1">
             <div className="flex items-center gap-3 pl-4 font-mono text-sm text-zinc-300">
-              <span className="text-zinc-500">$</span>
+              <span className="text-zinc-400">$</span>
               <span>
                 {cmd.slice(0, typedChars)}
                 {typedChars < cmd.length && (
@@ -125,15 +125,15 @@ export default function Hero() {
             <div className="h-3 w-3 rounded-full bg-zinc-700" />
             <div className="h-3 w-3 rounded-full bg-zinc-700" />
             <div className="ml-3 flex min-w-0 items-center gap-2 overflow-hidden rounded-md border border-zinc-800 bg-zinc-900 px-3 py-1 font-mono text-xs text-zinc-500">
-              <FolderTree className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">project / .opencontext</span>
+              <FolderTree className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+              <span className="truncate text-zinc-400">project / .opencontext</span>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-zinc-800/80">
             {/* Left: Folder tree */}
             <div className="p-6">
-              <div className="mb-3 flex items-center gap-2 text-xs font-mono text-zinc-500">
+              <div className="mb-3 flex items-center gap-2 text-xs font-mono text-zinc-400">
                 <span className="rounded border border-zinc-800 bg-zinc-900 px-2 py-1">
                   tree
                 </span>
@@ -142,21 +142,21 @@ export default function Hero() {
               <pre className="font-mono text-sm leading-7">
                 <span className="text-zinc-100">.opencontext/</span>
                 {"\n"}
-                <span className="text-zinc-600">{"  "}</span>
+                <span className="text-zinc-500">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-600" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
                   <span>├── architecture.md</span>
                 </span>
                 {"\n"}
-                <span className="text-zinc-600">{"  "}</span>
+                <span className="text-zinc-500">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-600" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
                   <span>├── api-contracts.md</span>
                 </span>
                 {"\n"}
-                <span className="text-zinc-600">{"  "}</span>
+                <span className="text-zinc-500">{"  "}</span>
                 <span className="inline-flex items-center gap-2 text-zinc-400">
-                  <FileText className="inline h-3.5 w-3.5 text-zinc-600" />
+                  <FileText className="inline h-3.5 w-3.5 text-zinc-500" />
                   <span>└── coding_rules.md</span>
                 </span>
               </pre>
@@ -164,7 +164,7 @@ export default function Hero() {
 
             {/* Right: Markdown preview */}
             <div className="p-6">
-              <div className="mb-3 flex items-center gap-2 text-xs font-mono text-zinc-500">
+              <div className="mb-3 flex items-center gap-2 text-xs font-mono text-zinc-400">
                 <span className="rounded border border-zinc-800 bg-zinc-900 px-2 py-1">
                   preview
                 </span>
@@ -173,14 +173,14 @@ export default function Hero() {
               <pre className="font-mono text-sm leading-6 text-zinc-400">
                 {markdownLines.map((line, i) => (
                   <div key={i} className="grid grid-cols-[2rem_1fr] gap-3">
-                    <span className="select-none text-right text-zinc-600">
+                    <span className="select-none text-right text-zinc-500">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {line.startsWith("##") || line.startsWith("###") ? (
                       <span className="text-zinc-200 font-medium">{line}</span>
                     ) : line.startsWith("- ") ? (
                       <span>
-                        <span className="text-zinc-600">- </span>
+                        <span className="text-zinc-500">- </span>
                         {line.slice(2)}
                       </span>
                     ) : line.startsWith("**") ? (

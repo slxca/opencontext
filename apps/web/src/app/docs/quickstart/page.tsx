@@ -107,7 +107,7 @@ export default function QuickstartPage() {
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              <span className="ml-2 text-xs text-zinc-500">example</span>
+              <span className="ml-2 text-xs text-zinc-400">example</span>
             </div>
             <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
               <code>{`"Save our API conventions under topic api-contracts"
@@ -126,21 +126,21 @@ export default function QuickstartPage() {
               className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800"
             >
               Configuration
-              <span className="text-zinc-500">→</span>
+              <span className="text-zinc-400">→</span>
             </Link>
             <Link
               href="/docs/tools"
               className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800"
             >
               Tools Reference
-              <span className="text-zinc-500">→</span>
+              <span className="text-zinc-400">→</span>
             </Link>
             <Link
               href="/docs/agents"
               className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800"
             >
               Agent Prompts
-              <span className="text-zinc-500">→</span>
+              <span className="text-zinc-400">→</span>
             </Link>
           </div>
         </section>

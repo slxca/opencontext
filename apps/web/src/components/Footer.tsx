@@ -20,7 +20,7 @@ export default function Footer() {
             href="https://github.com/slxca/opencontext"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+            className="text-xs text-zinc-400 transition-colors hover:text-zinc-300"
           >
             GitHub
           </a>
@@ -28,19 +28,19 @@ export default function Footer() {
             href="https://www.npmjs.com/package/opencontext-mcp"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+            className="text-xs text-zinc-400 transition-colors hover:text-zinc-300"
           >
             npm
           </a>
           <Link
             href="/imprint"
-            className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+            className="text-xs text-zinc-400 transition-colors hover:text-zinc-300"
           >
             Imprint
           </Link>
           <Link
             href="/privacy-policy"
-            className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+            className="text-xs text-zinc-400 transition-colors hover:text-zinc-300"
           >
             Privacy Policy
           </Link>
