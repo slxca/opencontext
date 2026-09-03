@@ -37,10 +37,46 @@ export default function QuickstartPage() {
 
         <section>
           <h2 className="mb-4 text-xl font-semibold text-white">
-            2. Configure your client
+            2. One-command setup
           </h2>
           <p className="mb-4 text-zinc-400">
-            Choose your client and add the MCP configuration:
+            Run the interactive init command inside your project:
+          </p>
+          <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center gap-2 border-b border-zinc-800/80 bg-zinc-950 px-4 py-2">
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+              <span className="ml-2 text-xs text-zinc-500">terminal</span>
+            </div>
+            <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
+              <code>npx -y opencontext-mcp init</code>
+            </pre>
+          </div>
+          <p className="mt-4 text-zinc-400">
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              init
+            </code>{" "}
+            asks whether to enable OpenCode and Claude Code integration, then
+            creates{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              .opencontext/
+            </code>
+            ,{" "}
+            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+              .opencontext.json
+            </code>
+            , and wires up the MCP server entries for your clients automatically.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-white">
+            3. Or configure manually
+          </h2>
+          <p className="mb-4 text-zinc-400">
+            Prefer to wire things up by hand? Choose your client and add the MCP
+            configuration:
           </p>
 
           <div className="space-y-4">
@@ -50,7 +86,7 @@ export default function QuickstartPage() {
             >
               <h3 className="text-sm font-medium text-white">OpenCode</h3>
               <p className="mt-1 text-sm text-zinc-400">
-                Add to .opencode.json configuration
+                Add to opencode.json configuration
               </p>
             </Link>
             <Link
@@ -87,17 +123,17 @@ export default function QuickstartPage() {
 
         <section>
           <h2 className="mb-4 text-xl font-semibold text-white">
-            3. Restart your client
+            4. Restart your client
           </h2>
           <p className="text-zinc-400">
-            After updating the configuration, restart your MCP client to load
-            the OpenContext server.
+            After the setup, restart your MCP client to load the OpenContext
+            server.
           </p>
         </section>
 
         <section>
           <h2 className="mb-4 text-xl font-semibold text-white">
-            4. Start using
+            5. Start using
           </h2>
           <p className="mb-4 text-zinc-400">
             Your agent can now save and read context. Try asking:

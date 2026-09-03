@@ -3,7 +3,11 @@
   "mcp": {
     "opencontext": {
       "type": "local",
-      "command": ["node", "packages/opencontext/dist/index.js"],
+      "command": [
+        "npx",
+        "-y",
+        "opencontext-mcp"
+      ],
       "enabled": true
     }
   }

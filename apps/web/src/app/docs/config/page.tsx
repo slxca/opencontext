@@ -74,10 +74,6 @@ export default function ConfigPage() {
           <p className="mb-4 text-zinc-400">
             Create{" "}
             <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
-              .opencontext.jsonc
-            </code>{" "}
-            or{" "}
-            <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
               .opencontext.json
             </code>{" "}
             in your project root:
@@ -88,24 +84,15 @@ export default function ConfigPage() {
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <span className="ml-2 text-xs text-zinc-500">
-                .opencontext.jsonc
+                .opencontext.json
               </span>
             </div>
             <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">
               <code>{`{
-  // Custom storage path
   "path": ".opencontext",
-
-  // Disable write operations
   "readOnly": false,
-
-  // Pause all tool access
   "disabled": false,
-
-  // Auto-generate index.md
   "autoIndex": true,
-
-  // Write guard settings
   "guard": {
     "enabled": true,
     "maxFileSizeKb": 50,
@@ -115,7 +102,7 @@ export default function ConfigPage() {
             </pre>
           </div>
           <p className="mt-4 text-sm text-zinc-500">
-            Supports JSONC (JSON with Comments). If no config file exists,
+            Plain JSON — comments are not supported. If no config file exists,
             OpenContext uses sensible defaults.
           </p>
         </section>

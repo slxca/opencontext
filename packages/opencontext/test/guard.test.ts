@@ -2,9 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { mkdir, rm, readFile, writeFile, access, symlink } from "node:fs/promises";
 import * as path from "node:path";
 import * as os from "node:os";
-import { validateWritePayload, sanitizeTopicPath } from "../src/validation.js";
-import { ContextStore } from "../src/context-store.js";
-import { UserInputError } from "../src/types.js";
+import { validateWritePayload } from "../src/validation/write-guard.js";
+import { sanitizeTopicPath } from "../src/validation/index.js";
+import { ContextStore } from "../src/store/context-store.js";
+import { UserInputError } from "../src/shared/errors.js";
 
 function getTmpDir(): string {
   return path.join(

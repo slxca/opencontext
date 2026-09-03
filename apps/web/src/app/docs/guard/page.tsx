@@ -89,7 +89,7 @@ export default function GuardPage() {
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
               <span className="ml-2 text-xs text-zinc-500">
-                .opencontext.jsonc
+                .opencontext.json
               </span>
             </div>
             <pre className="overflow-x-auto p-4 font-mono text-sm text-zinc-300">

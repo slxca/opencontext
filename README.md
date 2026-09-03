@@ -22,18 +22,36 @@ No vector databases, no cloud subscriptions, and no hidden state. Memory is plai
 
 ### Quickstart
 
-Run directly without installation via `npx`:
+Run the MCP server directly without installation via `npx`:
 
 ```bash
 npx -y opencontext-mcp
 
 ```
 
+### One-Command Setup
+
+Scaffold OpenContext in the current project interactively:
+
+```bash
+npx -y opencontext-mcp init
+```
+
+`init` walks you through the setup (enabling OpenCode and Claude Code integration) and generates everything you need:
+
+- `.opencontext/` — directory that holds your context topic files
+- `.opencontext.json` — configuration template
+- `opencode.json` — MCP server entry for OpenCode
+- `.mcp.json` — MCP server entry for Claude Code
+- `AGENTS.md` / `CLAUDE.md` — workflow reminders for your agents
+
+The `init` command takes no arguments: it always runs in the current directory, prompts interactively, and never overwrites an existing config.
+
 ### Client Setup
 
 #### OpenCode
 
-Add OpenContext to your project MCP configuration (`opencode.json`):
+Add OpenContext to your project MCP configuration (`opencode.json`) — or let `opencontext-mcp init` do it for you:
 
 ```json
 {
@@ -121,27 +139,19 @@ When a topic becomes obsolete, call `delete_context` to remove it. For deprecate
 
 ### Configuration
 
-Customize storage paths and security boundaries with an optional `.opencontext.jsonc` file in your repository root:
+Customize storage paths and security boundaries with an optional `.opencontext.json` file in your repository root (plain JSON — comments are not supported):
 
-```jsonc
+```json
 {
-  // Storage location (default: ".opencontext")
   "path": ".opencontext",
-
-  // Prevent agents from writing or updating files
   "readOnly": false,
-
-  // Auto-generate index.md with topic descriptions
   "autoIndex": true,
-
-  // Write guard & prompt injection defenses
   "guard": {
     "enabled": true,
     "maxFileSizeKb": 50,
     "strictPatternCheck": true
   }
 }
-
 ```
 
 ---

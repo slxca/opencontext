@@ -25,6 +25,26 @@ export default function ClaudePage() {
         className="space-y-8"
       >
         <section>
+          <div className="mb-8 rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
+            <h3 className="text-sm font-medium text-white">
+              One-command setup
+            </h3>
+            <p className="mt-1 text-sm text-zinc-400">
+              Using Claude Code? Run{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                npx -y opencontext-mcp init
+              </code>{" "}
+              in your project to create{" "}
+              <code className="rounded border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-sm text-zinc-300">
+                .mcp.json
+              </code>{" "}
+              with the OpenContext MCP entry automatically. The steps below are
+              for Claude Desktop&apos;s global config.
+            </p>
+          </div>
+        </section>
+
+        <section>
           <h2 className="mb-4 text-xl font-semibold text-white">
             Configuration
           </h2>

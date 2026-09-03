@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { validateTopic } from "../src/validation.js";
-import { UserInputError } from "../src/types.js";
+import { validateTopic } from "../src/validation/index.js";
+import { UserInputError } from "../src/shared/errors.js";
 
 describe("validateTopic", () => {
   it("returns trimmed topic for valid snake_case", () => {

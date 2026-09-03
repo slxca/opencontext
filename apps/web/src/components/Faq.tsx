@@ -43,7 +43,7 @@ const faqs = [
   {
     question: "How do I configure OpenContext?",
     answer:
-      "Create a .opencontext.jsonc or .opencontext.json file in your project root. You can customize the storage path, enable read-only mode, configure the write guard, and more.",
+      "Create a .opencontext.json file in your project root. You can customize the storage path, enable read-only mode, configure the write guard, and more. Or run `npx -y opencontext-mcp init` to scaffold it automatically.",
   },
 ];
 

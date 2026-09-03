@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mkdir, rm, readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import * as os from "node:os";
-import { ContextStore } from "../src/context-store.js";
-import { UserInputError } from "../src/types.js";
+import { ContextStore } from "../src/store/context-store.js";
+import { UserInputError } from "../src/shared/errors.js";
 
 function getTmpDir(): string {
   return path.join(
